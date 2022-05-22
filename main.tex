@@ -1,0 +1,323 @@
+\documentclass[lettersize,journal]{IEEEtran}
+\usepackage{amsmath,amsfonts}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{array}
+\usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
+\usepackage{textcomp}
+\usepackage{stfloats}
+\usepackage{url}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{cite}
+\usepackage{hyperref}
+%\documentclass[a4paper,10pt]{article}
+\hyphenation{op-tical net-works semi-conduc-tor IEEE-Xplore}
+\begin{document}
+
+\title{Laboratorio 2: Interferencia inter Simbolica}
+
+\author{Enrique Acosta, enrique.acosta1@mail.udp.cl \\
+Abel Baulloza, abel.baulloza@mail.udp.cl \\
+Diego Carrillo, diego.carrillo1@mail.udp.cl\\
+
+Escuela de Informática y Telecomunicaciones \\ \IEEEmembership{Universidad Diego Portales}
+}
+
+\maketitle
+
+
+
+\section{Introducción}\label{sec:introduccion}
+En el presente informe de laboratorio se trabaja en un contexto de un sistema de comunicación digital. Existe un caso dentro del sistema en donde la señal de salida es igual a la señal de entrada, dicho caso ocurre a uno ideal, donde no existe ningún tipo de distorsión en la amplitud o fase de la señal entrante. Dicho caso ideal no ocurre en la realidad, ya que puede ocurrir interferencia entre los pulsos o símbolos enviados a través de la señal de entrada, causando disgregación de los pulsos enviados en el tiempo, obteniendo una señal de salida distinta a la esperada.\\
+Lo mencionado anteriormente corresponde a la Interferencia Intersimbólica, la cual se define como ``forma de distorsión de una señal en la cual un símbolo interfiere con símbolos posteriores''. Es un fenómeno no deseado ya que los símbolos anteriores tiene un efecto similar al del ruido, lo que hace que la comunicación sea menos fiable.\\
+Dicha interferencia puede ocurrir dada las siguientes causas: limitación del ancho de banda del canal, problemas de sincronismo y posibles distorsiones de amplitud o de fase (tal como se comentó anteriormente).\\
+Además de la Interferencia Intersimbólica (ISI), se trabaja con el diagrama de ojo, el cual es un método que permite realizar una indagación de como se comportan los enlaces de transmisión. Permite indagar las formas de los pulsos que se propagan a lo largo del enlace para observar su forma, diferencia de fase, nivel de ruido, intensidad de la señal, y así evaluar la distorsión del canal (ISI), el ruido o nivel de ruido y el error de sincronismo en la fuente receptora. 
+\cite{ref3}\\
+Mediante un gráfico en donde se presentan datos digitales de un receptor, esté (diagrama de ojo) nos muestra la superposición de distintas combinaciones de unos y ceros según una cantidad de bits determinados. \\
+La finalidad de esta experiencia de laboratorio es la de evitar la interferencia mencionada por medio de la utilización de símbolos que representen distintos niveles de voltaje a transmitir.
+
+\section{Antecedentes}\label{sec:Marcoteorico}
+
+\begin{enumerate}
+    \item \textbf{¿Que es la interferencia ínter-simbólica (ISI)?¿Cual es su uso?} \newline \newline 
+La ISI, es causada cuando existe una filtración inadecuada de parte de los pulsos multinivel del ancho de banda, ya que, estos se dispersaran en el tiempo, lo que provocara que el pulso para cada símbolo pueda fugarse a las ranuras de tiempo adyacente y causar la \textit{interferencia intersimbolica}.
+\newline \newline
+En otras palabras, se conocerá como \textit{interferencia intersimbolica} cuando los pulsos rectangulares no mantienen su forma cuando el ancho de banda, para el proceso de transmisión, es finito; en donde, mientras más pequeño sea el ancho de banda, sus pulsos se dispersarán, provocando una intervención con el pulso transmitido. \newline
+
+\item \textbf{Filtro Coseno Alzado de Nyquist}\\\\
+\textbf{DEFINICIÓN.} El \textit{filtro de coseno elevado de Nyquist} tiene la función de transferencia.
+    \begin{equation}
+        H_{e}(f)= \left\{\begin{array}{lcc}
+             1, & |f| < f_{1} \\
+             \frac{1}{2} (1 + cos[\frac{\pi(|f|-f_{1})}{2 f_{\Delta}}]) & f_{1}<|f|< B \\
+             0, & |f| > B
+        \end{array}
+        \right.
+    \end{equation}
+\begin{center}
+    \textit{Ecuación: Definición Coseno Alzado de Nyquist}
+\end{center}
+
+Donde B es el ancho de banda absoluto y los parámetros.\\
+
+\begin{equation}
+    f_{\Delta} = B - f_0
+\end{equation}
+\begin{equation}
+    f_{1} \overset{\Delta}{=} f_{0} - f_{\Delta} 
+\end{equation}
+\begin{center}
+    \textit{Ecuación: Formula de ???????}    
+\end{center}
+
+El término $f_{0}$ es el ancho de banda de 6 dB del filtro. El factor de rolloff (atenuación o decaída) se define como:
+\begin{equation}
+    r = \frac{f_{\Delta}}{f_{0}}
+\end{equation}
+\begin{center}
+    \textit{Ecuación: Roll-Off}
+\end{center}
+
+La respuesta al impulso correspondiente es:
+
+\begin{equation}
+    h_{e}(t)=F^{-1}[H_{e}(f)]=2f_{0}(\frac{sen2\pi f_{0}t}{2\pi f_{0}t})[\frac{cos2\pi f_{\Delta}t}{1-(4 f_{\Delta}t)^2}]
+\end{equation}
+\begin{center}
+    \textit{Ecuación:Respuesta al Impulso. }
+\end{center}
+
+Cabe destacar, que la respuesta en frecuencia corresponde a calcular la transformada de Fourier de la respuesta al impulso del coseno alzado de Nyquist. 
+\newline
+    \item \textbf{¿Que es un diagrama de ojo?} \newline \newline
+       El diagrama de ojo, es formado por una superposición de datos, para ser mas específicos, es originado al momento de posicionar un trazo de salida sobre otro,  de un filtro receptor. En este diagrama, se toma la representación mediante bits (unos y ceros) en un intervalo de tiempo determinado, en donde el resultado final de los unos y ceros nos otorgaŕa las cualidades correspondiente a los pulsos que son propagados mediante algún medio.
+\end{enumerate}
+
+\section{Metodología}\label{sec:metodologia} 
+% COMO SE REALIZO EL LABORATORIO%
+Para realizar esta actividad, se necesitó de la construcción de una señal sinusoidal específica, llamada coseno alzado de Nyquist, representada por la ecuación (6). 
+\begin{equation} sen(x)/x\end{equation} 
+
+Para la primera parte de la actividad, llamada preactividad, se utilizó la ecuación (6) como referencia para crear y obtener la respuesta al impulso y respuesta en frecuencia de una señal coseno alzado de Nyquist. La respuesta al impulso se crea mediante la ecuación (5) y sus parámetros expresados en las ecuaciones (4) y (2), siendo, ecuación (5) la representación de la respuesta al impulso del coseno alzado de Nyquist, ecuación (4) el factor de roll-off (atenuación o decaída) y ecuación (2) parámetros necesarios para la construcción de la respuesta al impulso, B representa el ancho de banda absoluto, fo es el ancho de banda del filtro y la resta entre estos dos.\\
+En este caso en concreto, se utilizó un valor de 1000[Hz] como frecuencia de muestreo y 10[dB] para el ancho de banda del filtro.
+\\
+Todo lo explicado recientemente se puede observar en el código (1) en el apartado de Anexos.\\
+
+Luego, se procedió a construir la respuesta en frecuencia de la respuesta al impulso construida. Para esto, como se destacó en el apartado de antecedentes, la respuesta en frecuencia corresponde a calcular la transformada de Fourier de la respuesta al impulso del coseno alzado de Nyquist construido. Entonces, para esto, se utilizó la función fft() o Fast Fourier Transform de Matlab, se utiliza para calcular y obtener las transformadas de Fourier en vectores. Ya calculada la transformada de Fourier, como nos interesa solo valores positivos, entonces se procede a obtener al valor absoluto de cada valor en el vector resultante, finalmente, se divide cada valor para así tener una amplitud constante equivalente a 1.
+\\
+Todo lo explicado recientemente se puede observar en el código (2) en el apartado de Anexos.\\
+
+Para la segunda y última parte de la actividad, se pidió realizar un diagrama de ojo para una señal coseno alzado de Nyquist con factor de roll-off de 0.22. Para esto, se necesitó crear un ciclo for donde el proceso a explicar se repetirá una cantidad de veces definida, este proceso se explicará a continuación. Primero, se genera un vector de dimensión 1x3 con números aleatorios entre 0 y 1, multiplicando los resultados en dos y restando 1, luego, al mismo vector se le agrega ruido gauseano con la función awgn, con una relación señal/ruido de 20[dB] y especificando la opción measured, así solamente genera ruido con la relación señal/ruido especificada. Después al mismo vector que se le agregó ruido gauseano, se sobre-muestrea con una cantidad de ceros equivalente al tamaño del vector temporal de la respuesta al impulso menos uno entre cada muestra. 
+??????????????=??
+
+$ Esto no va lo de abajo, cambiar las imágenes de lugar, todas al resultado, con código o al anexo $
+
+\subsection{Preactividad: Grafique la respuesta al impulso y la respuesta en
+frecuencia del pulso coseno alzado para los siguientes
+factores de roll-off: $\alpha = 0$; $\alpha = 0,25$; $\alpha = 0,75$  y $\alpha = 1$.}
+
+\vspace{2mm}
+
+Para graficar la respuesta al impulso y en frecuencia del pulso coseno alzado, se realizó el siguiente programa en Matlab. Este será explicado a continuación.
+
+\vspace{2mm}
+
+%\begin{figure}[h]
+%    \centering
+%    \includegraphics[width=9cm]{Images/MATLAB_RESPUESTA_AL_IMPULSO2.png}
+%    \caption{Código respuesta al impulso de coseno alzado de Nyquist}
+%    \label{fig:my_label}
+%\end{figure}
+
+\vspace{2mm}
+
+%\begin{figure}[h]
+%    \centering
+%    \includegraphics[width=9cm]{Images/Impulso.png}
+%    \caption{Código respuesta al impulso de coseno alzado de Nyquist}
+%    \label{fig:my_label}
+%\end{figure}
+
+\vspace{2mm}
+
+%La función llamada cosalzado recibe un valor de roll-off específico, dentro de esta se construye la función asociada a la respuesta en impulso de un coseno alzado de Nyquist, definiendo una frecuencia de muestreo (Fm), tiempo de muestreo (Tm), vector de tiempo (t), el ancho de banda del filtro (fo), el ancho de banda absoluto (B) y el parámetro (fd). Definido todo lo anterior, se procede a construir la función en sí, esta es la ilustrada por la Figura 4. Finalmente, en las líneas 96 y .03 se busca las indeterminaciones en las funciones, en las líneas 98 y .05 se reemplaza ese valor indeterminado por los valores $2*fo$ y $pi/4$ respectivamente.
+\\
+%\begin{figure}[h]
+%    \centering
+%    \includegraphics[width=9cm]{Images/Código_Fourier_Respuesta_en_Frecuencia.png}
+%    \caption{Código respuesta en frecuencia de coseno alzado de Nyquist}
+%    \label{fig:my_label}
+%\end{figure}
+
+%La función llamada TransformadaFourier recibe tres valores, la respuesta a impulso del coseno alzado (s), frecuencia ??? (fs) y frecuencia de muestreo (Fm), devolviendo un arreglo de dos valores, vector de frecuencia para graficar la respuesta en frecuencia (f) y la respuesta en frecuencia del impulso de coseno alzado (FFT). Dentro de la función, se realiza la transformada de Fourier de la respuesta al impulso del coseno alzado, en la línea 108, se le calcula el valor absoluto (abs) a la transformada de Fourier centralizada (fftshift) y al final se divide en la frecuencia ??? (fs) para adaptarla al gráfico a utilizar. Para finalizar, se crea el vector de frecuencias (f), el cual cumple el papel de dominio para graficar la respuesta en frecuencia (FFT).
+
+%\subsection{Actividad 1: Genere el diagrama de ojo para el pulso coseno alzado empleando los siguientes parámetros: señalización antípoda binaria (BPSK), $10^5$ símbolos, α = 0.22 y
+%asuma un canal perfecto AWGN.}
+
+%\begin{figure}[h]
+%    \centering
+%    \includegraphics[width=9cm]{Images/Codigo_Diagrama_De_Ojo.png}
+%    \caption{Código generador de Diagrama de Ojo de coseno alzado con roll-off 0.22}
+%    \label{fig:my_label}
+%\end{figure}
+\\
+
+%Se realiza un ciclo for de 10 mil vueltas para ir sumando la respuesta al impulso consigo misma.\\
+%Se genera un arreglo de dimensión 1*3 con números aleatorios entre 0 y 1. Seguido de esto al mismo arreglo se le agrega ruido gaussiano con una relación señal/ruido de 20, tipo escalar. Después se aumenta la tasa de muestreo, osea, sobre muestreo, agregando lenght(t) cantidad de ceros al arreglo s, esto con la función upsample. ???????
+\\
+%segundo ciclo for ???????
+%?????????
+\\
+%Se realiza una convolución entre ?????? (x\_t) y la respuesta al impulso del coseno alzado con valor de roll-off 0.25.\\
+%Finalmente, se gráfica el resultado de esta convolución 10 mil veces, sobreponiendo cada gráfica con las ya graficadas, dando como resultado el diagrama de ojo.
+\vspace{2mm}
+
+\section{Resultados}\label{sec:resultados}
+
+\subsection{Preactividad}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=9cm]{Images/RESP_AL_IMPULSO_COS_ALZADO.PNG}
+    \caption{Gráfica respuesta al impulso de coseno alzado de Nyquist con diversos valores de roll-off}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=9cm]{Images/RES_EN_FRECUENCIA_COS_ALZAD_NY.PNG}
+    \caption{Gráfica respuesta en frecuencia de coseno alzado de Nyquist con diversos valores de roll-off}
+    \label{fig:my_label}
+\end{figure}
+
+\newpage
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=9cm]{?????}
+    \caption{Código respuesta al impulso de coseno alzado de Nyquist}
+    \label{fig:my_label}
+\end{figure}
+
+
+
+\subsection{Actividad 1: Genere el diagrama de ojo para el pulso coseno alzado empleando los siguientes parámetros: señalización antípoda binaria (BPSK), $10^5$ símbolos, α = 0.22 y
+asuma un canal perfecto AWGN.}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=9cm]{Images/COS022.PNG}
+    \caption{Gráfica respuesta al impulso de coseno alzado de Nyquist con roll-of: 0.22}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=9cm]{Images/OJO_022.PNG}
+    \caption{Gráfica de Diagrama de Ojo con 10\^4 impulsos}
+    \label{fig:my_label}
+\end{figure}
+\newpage
+
+\section{Análisis de Resultados}\label{sec:analisis_resultados}
+
+\subsection{Preactividad}
+\newline
+
+En la figura 9, se observa como es que, dependiendo del valor roll-off, la gráfica del coseno alzado varía, siendo la situación con valor $roll-off=0$ el caso de mínimo ancho de banda, donde $fo=B$, por ende la respuesta al impulso es la forma original del coseno alzado de Nyquist $(sen(x)/x)$.
+Conforme se incrementa el valor de roll-off, el ancho de banda absoluto también incrementa, esto provoca que la gráfica se vaya desviando de lo que es un coseno alzado con valor de $roll-off=0$.
+\\
+En la figura 10, se observa como es que, dependiendo del valor roll-off, la respuesta en frecuencia varía de forma, siendo la respuesta con valor de $roll-off=0$ semejante a lo que viene siendo una señal cuadrada, cabe destacar que al tener un valor de $roll-off=0$, el ancho de banda es mínimo, ya que se cumple que $fo=B$. Conforme incrementa el valor de roll-off, la respuesta en frecuencia se asemeja a una campana de gauss.\\
+
+\subsection{Actividad 1: Genere el diagrama de ojo para el pulso coseno alzado empleando los siguientes parámetros: señalización antípoda binaria (BPSK), $10^5$ símbolos, α = 0.22 y
+asuma un canal perfecto AWGN.}
+\newline
+
+En la figura 12 se muestra la respuesta al impulso de un coseno alzado de Nyquist con valor de roll-off=0.22, este es utilizado para generar el diagrama de ojo ilustrado en la figura 13.\\
+
+¿Qué pasa si disminuye la frecuencia de muestreo?\\
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=9cm]{Images/ojo2000.PNG}
+    \caption{Gráfica de Diagrama de Ojo con frecuencia de muestreo = 2000}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=9cm]{Images/ojo200.PNG}
+    \caption{Gráfica de Diagrama de Ojo con frecuencia de muestreo = 200}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=9cm]{Images/ojo20.PNG}
+    \caption{Gráfica de Diagrama de Ojo con frecuencia de muestreo = 20}
+    \label{fig:my_label}
+\end{figure}
+\newpage
+
+Tras realizar pruebas de ir disminuyendo la frecuencia de muestreo, se tiene que las gráficas obtenidas tras compilar el código, los diagramas de ojos se van graficando con líneas cada vez más ``rectas'', esto ocurre debido a que cada gráfica diagrama de ojo se va generando a medida que se va graficando cada muestro, uno sobre esto (se van apilando o sobre-poniendo cada muestro graficado sobre el muestreo anterior), teniendo en cuenta esto último, se tiene que al ir graficando menos muestreos, la cantidad de gráficas apiladas una sobre otra es menor, lo que provoca que a medida que vaya disminuyendo la frecuencia de muestro, los diagramas de ojos tengan formas más rectas. 
+
+\newpage
+
+En forma general, ¿Qué sucede al incrementar el valor de roll-off?.\\
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=9cm]{Images/Ojo0.5.png}
+    \caption{Gráfica de Diagrama de Ojo con roll-off = 0.5}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=9cm]{Images/Ojo1.0.png}
+    \caption{Gráfica de Diagrama de Ojo con roll-off = 1.0}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=9cm]{Images/Ojo1.5.png}
+    \caption{Gráfica de Diagrama de Ojo con roll-off = 1.5}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=9cm]{Images/Ojo3.5.png}
+    \caption{Gráfica de Diagrama de Ojo con roll-off = 3.5}
+    \label{fig:my_label}
+\end{figure}
+
+
+%EN ESTE PÁRRAFO ES SOLO RELLENO, NO DICE NADA DE INFORMACIÓN RELEVANTE CON RESPECTO A LOS RESULTADOS OBSERVADOS, SOLO DESCRIBES QUE SE VE PERO NO HAY TEORÍA. 
+
+Tal como se puede apreciar en las figuras que están a continuación, lo que ocurre al incrementar el roll-off, la amplitud del ojo disminuye, ya que por ejemplo se tiene la comparación de la Fig. 16, en donde el roll-off es de 0.5 con una amplitud aproximada de 800(m) en los 100(s), en cambio en la Fig. 19 se tiene un diagrama de ojo con roll-off de 3.5, en donde la amplitud del diagrama es de aproximada 250(m) a los 100(s). Otra situación a comentar que ocurre con el incremento del roll-off es la forma del diagrama, ya que en el ejemplo antes comentado, para la Fig. 16, el diagrama tiene forma de ojo con curvas, ondeado; en cambio, para el caso de la Fig. 19 se tiene un diagrama compuesto por líneas más rectas.
+
+\section{Conclusiones}\label{sec:conclusiones}
+\newpage
+
+\section{Anexos}\label{sec:anexo}
+
+
+\begin{thebibliography}{}
+  \bibitem{ref1}OpenStax CNX. (s. f.). Interferencia Intersimbólica. \url{https://cnx.org/contents/YI4PrPwT@1.2:J58qWKSA@1/9-Interferencia-Intersimb\%C3\%B3lica-ISI}
+  \bibitem{ref2}Diagrama de ojo - frwiki.wiki. (s. f.). frwiki.wiki. \url{https://es.frwiki.wiki/wiki/Diagramme\_de\_l\%27\%C5\%93il\#:\%7E:text=El\%20diagrama\%20de\%20ojo\%20es,con\%20la\%20tasa\%20de\%20se\%C3\%B1al.}
+  \bibitem{ref3}  colaboradores de Wikipedia. (2019, 11 julio). Diagrama de ojos. Wikipedia, la enciclopedia libre. \url{https://es.wikipedia.org/wiki/Diagrama\_de\_ojos}
+
+  
+ % \bibitem{CISCO} Cisco CCNA,
+  %    Curso certificación,
+   %   \texttt{https://www.cisco.com}.
+     % Visitada el 01 de Junio del 2020.
+      
+
+
+\end{thebibliography}
+
+\bibliographystyle{IEEEtranS}
+\bibliography{sampleBibFile}
+\end{document}
