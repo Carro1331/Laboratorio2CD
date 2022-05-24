@@ -32,37 +32,33 @@ title('RESPUESTA EN FRECUENCIA COSENO ALZADO DE NYQUIST');
 legend('roll-of:0','roll-of:0.25','roll-of:0.75','roll-of:1');
 
 %%%%%%%%%%%%%% DIAGRAMA DE OJO COSENO ALZADO DE NYQUIST %%%%%%%%%%%%%%%%%%%
-n = 10^5;
-simbolos = randi([0,1], 1, n);
-simbolos = 2*simbolos-1; % Crea los randoms para la crear el diagrama de Ojo
-p = length(rollof(0.22));
-
 figure(3)
 newcolors = {'#F00','#F80','#FF0','#0B0','#00F','#50F','#A0F'};
 colororder(newcolors);
 
-for j=1:10000 %%SE PUEDE REDUCIR ESTE VALOR PARA MEJORAR LA EJECUCION DE CODIGO 
+for j=1:1000 %%SE PUEDE REDUCIR ESTE VALOR PARA MEJORAR LA EJECUCION DE CODIGO 
 
     s = 2*randi([0,1],1,3)-1; %Generamos los numeros aleatorios
     s = awgn(s,20,'measured'); %Agregamos el ruido gauseano
-    x_t = upsample(s, length(t));
+    pulseT = upsample(s, length(t)); %Agrega muestras
     
-    aux = x_t(1);
-
+    aux = pulseT(1);
+    sizeX = length(pulseT);
+    sizet =length(t);
     c = 1;
-    for i=1:length(x_t)
-        if c*length(t)+1 == i
+    for i=1:sizeX
+        if c*sizet+1 == i
             c = c+1;
-            aux = x_t(i);
+            aux = pulseT(i);
         end
-        x_t(i) = aux;
+        pulseT(i) = aux;
     end  
     
-    y_1 = conv(x_t,rollof2(0.22)); %aplicamos, la convolucion debida
+    finalPulse = conv(pulseT,rollof2(0.22)); %aplicamos, la convolucion debida
     hold on
     subplot(2,1,1);
-    plot(y_1);
-    xlim([100 300]);ylim([-1250 1250]); %Se aplica el corte necesario para mostrar el diagrama de ojo en la mejor manera.
+    plot(finalPulse);
+    %xlim([100 300]);ylim([-1000 1000 ]); %Se aplica el corte necesario para mostrar el diagrama de ojo en la mejor manera.
 end
 
 title('DIAGRAMA DE OJO DE COSENO ALZADO DE NYQUIST CON ROLLOFF DE 0.22');
